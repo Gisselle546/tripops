@@ -30,15 +30,14 @@ export class NotificationsController {
 
   @Get('unread-count')
   unreadCount(@Req() req: { user: AuthUser }) {
-    return this.notifications.unreadCount(req.user.userId).then((count) => ({ count }));
+    return this.notifications
+      .unreadCount(req.user.userId)
+      .then((count) => ({ count }));
   }
 
   @Patch('read')
   @Throttle({ default: { ttl: 60_000, limit: 30 } })
-  markAsRead(
-    @Req() req: { user: AuthUser },
-    @Body() body: { ids: string[] },
-  ) {
+  markAsRead(@Req() req: { user: AuthUser }, @Body() body: { ids: string[] }) {
     return this.notifications.markAsRead(req.user.userId, body.ids);
   }
 

@@ -23,9 +23,11 @@ describe('BookingsService', () => {
           provide: getRepositoryToken(Booking),
           useValue: {
             create: jest.fn().mockImplementation((dto) => dto),
-            save: jest.fn().mockImplementation((entity) =>
-              Promise.resolve({ id: 'test-id', ...entity }),
-            ),
+            save: jest
+              .fn()
+              .mockImplementation((entity) =>
+                Promise.resolve({ id: 'test-id', ...entity }),
+              ),
             findOne: jest.fn().mockResolvedValue(null),
             find: jest.fn().mockResolvedValue([]),
           },

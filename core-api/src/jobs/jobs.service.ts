@@ -162,7 +162,9 @@ export class JobsService {
     try {
       // Future: query external APIs for price changes on confirmed bookings.
       // For now, just log that the job ran.
-      this.logger.debug('Price check polling ran (no-op until external APIs are integrated)');
+      this.logger.debug(
+        'Price check polling ran (no-op until external APIs are integrated)',
+      );
     } catch (err) {
       this.logger.error('Price check polling error', err.stack);
     }
@@ -184,7 +186,9 @@ export class JobsService {
         .execute();
 
       if (affected && affected > 0) {
-        this.logger.log(`Notification cleanup: removed ${affected} old notification(s)`);
+        this.logger.log(
+          `Notification cleanup: removed ${affected} old notification(s)`,
+        );
       }
     } catch (err) {
       this.logger.error('Notification cleanup error', err.stack);

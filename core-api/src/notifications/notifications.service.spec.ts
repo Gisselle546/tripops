@@ -15,9 +15,11 @@ describe('NotificationsService', () => {
           provide: getRepositoryToken(Notification),
           useValue: {
             create: jest.fn().mockImplementation((dto) => dto),
-            save: jest.fn().mockImplementation((entity) =>
-              Array.isArray(entity) ? entity : { id: 'test-id', ...entity },
-            ),
+            save: jest
+              .fn()
+              .mockImplementation((entity) =>
+                Array.isArray(entity) ? entity : { id: 'test-id', ...entity },
+              ),
             findAndCount: jest.fn().mockResolvedValue([[], 0]),
             count: jest.fn().mockResolvedValue(0),
             update: jest.fn().mockResolvedValue({ affected: 1 }),

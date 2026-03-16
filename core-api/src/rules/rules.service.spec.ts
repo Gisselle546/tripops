@@ -31,9 +31,11 @@ describe('RulesService', () => {
           provide: getRepositoryToken(RuleSet),
           useValue: {
             create: jest.fn().mockImplementation((dto) => dto),
-            save: jest.fn().mockImplementation((entity) =>
-              Promise.resolve({ id: 'test-id', ...entity }),
-            ),
+            save: jest
+              .fn()
+              .mockImplementation((entity) =>
+                Promise.resolve({ id: 'test-id', ...entity }),
+              ),
             findOne: jest.fn().mockResolvedValue(null),
           },
         },
@@ -41,9 +43,11 @@ describe('RulesService', () => {
           provide: getRepositoryToken(Rule),
           useValue: {
             create: jest.fn().mockImplementation((dto) => dto),
-            save: jest.fn().mockImplementation((entity) =>
-              Promise.resolve({ id: 'test-id', ...entity }),
-            ),
+            save: jest
+              .fn()
+              .mockImplementation((entity) =>
+                Promise.resolve({ id: 'test-id', ...entity }),
+              ),
             find: jest.fn().mockResolvedValue([]),
             findOne: jest.fn().mockResolvedValue(null),
             delete: jest.fn().mockResolvedValue({ affected: 1 }),
@@ -53,9 +57,11 @@ describe('RulesService', () => {
           provide: getRepositoryToken(RuleEvaluation),
           useValue: {
             create: jest.fn().mockImplementation((dto) => dto),
-            save: jest.fn().mockImplementation((entity) =>
-              Promise.resolve({ id: 'test-id', ...entity }),
-            ),
+            save: jest
+              .fn()
+              .mockImplementation((entity) =>
+                Promise.resolve({ id: 'test-id', ...entity }),
+              ),
             find: jest.fn().mockResolvedValue([]),
           },
         },

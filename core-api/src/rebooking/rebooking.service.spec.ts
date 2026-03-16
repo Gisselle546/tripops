@@ -41,9 +41,11 @@ describe('RebookingService', () => {
           provide: getRepositoryToken(DisruptionEvent),
           useValue: {
             create: jest.fn().mockImplementation((dto) => dto),
-            save: jest.fn().mockImplementation((entity) =>
-              Promise.resolve({ id: 'test-id', ...entity }),
-            ),
+            save: jest
+              .fn()
+              .mockImplementation((entity) =>
+                Promise.resolve({ id: 'test-id', ...entity }),
+              ),
             findOne: jest.fn().mockResolvedValue(null),
             find: jest.fn().mockResolvedValue([]),
           },
@@ -52,9 +54,11 @@ describe('RebookingService', () => {
           provide: getRepositoryToken(RebookingCase),
           useValue: {
             create: jest.fn().mockImplementation((dto) => dto),
-            save: jest.fn().mockImplementation((entity) =>
-              Promise.resolve({ id: 'test-id', ...entity }),
-            ),
+            save: jest
+              .fn()
+              .mockImplementation((entity) =>
+                Promise.resolve({ id: 'test-id', ...entity }),
+              ),
             findOne: jest.fn().mockResolvedValue(null),
             find: jest.fn().mockResolvedValue([]),
           },
@@ -63,9 +67,11 @@ describe('RebookingService', () => {
           provide: getRepositoryToken(RebookingOption),
           useValue: {
             create: jest.fn().mockImplementation((dto) => dto),
-            save: jest.fn().mockImplementation((entity) =>
-              Promise.resolve({ id: 'test-id', ...entity }),
-            ),
+            save: jest
+              .fn()
+              .mockImplementation((entity) =>
+                Promise.resolve({ id: 'test-id', ...entity }),
+              ),
             findOne: jest.fn().mockResolvedValue(null),
             find: jest.fn().mockResolvedValue([]),
           },
@@ -74,9 +80,11 @@ describe('RebookingService', () => {
           provide: getRepositoryToken(RebookingDecision),
           useValue: {
             create: jest.fn().mockImplementation((dto) => dto),
-            save: jest.fn().mockImplementation((entity) =>
-              Promise.resolve({ id: 'test-id', ...entity }),
-            ),
+            save: jest
+              .fn()
+              .mockImplementation((entity) =>
+                Promise.resolve({ id: 'test-id', ...entity }),
+              ),
             findOne: jest.fn().mockResolvedValue(null),
           },
         },

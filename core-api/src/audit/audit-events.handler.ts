@@ -33,8 +33,7 @@ export class AuditEventsHandler {
 
     [DomainEvents.COMMENT_CREATED]: AuditAction.COMMENT_CREATED,
     [DomainEvents.PROPOSAL_CREATED]: AuditAction.PROPOSAL_CREATED,
-    [DomainEvents.PROPOSAL_OPTION_CREATED]:
-      AuditAction.PROPOSAL_OPTION_CREATED,
+    [DomainEvents.PROPOSAL_OPTION_CREATED]: AuditAction.PROPOSAL_OPTION_CREATED,
     [DomainEvents.VOTE_TOGGLED]: AuditAction.VOTE_TOGGLED,
 
     [DomainEvents.RULESET_UPSERTED]: AuditAction.RULESET_UPSERTED,

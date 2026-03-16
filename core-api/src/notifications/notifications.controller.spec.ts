@@ -12,7 +12,9 @@ describe('NotificationsController', () => {
         {
           provide: NotificationsService,
           useValue: {
-            listForUser: jest.fn().mockResolvedValue({ items: [], total: 0, unreadCount: 0 }),
+            listForUser: jest
+              .fn()
+              .mockResolvedValue({ items: [], total: 0, unreadCount: 0 }),
             unreadCount: jest.fn().mockResolvedValue(0),
             markAsRead: jest.fn().mockResolvedValue({ ok: true }),
             markAllAsRead: jest.fn().mockResolvedValue({ ok: true }),

@@ -17,9 +17,11 @@ describe('ItineraryService', () => {
           provide: getRepositoryToken(ItineraryDay),
           useValue: {
             create: jest.fn().mockImplementation((dto) => dto),
-            save: jest.fn().mockImplementation((entity) =>
-              Promise.resolve({ id: 'test-id', ...entity }),
-            ),
+            save: jest
+              .fn()
+              .mockImplementation((entity) =>
+                Promise.resolve({ id: 'test-id', ...entity }),
+              ),
             find: jest.fn().mockResolvedValue([]),
             findOne: jest.fn().mockResolvedValue(null),
           },
@@ -28,9 +30,11 @@ describe('ItineraryService', () => {
           provide: getRepositoryToken(ItineraryItem),
           useValue: {
             create: jest.fn().mockImplementation((dto) => dto),
-            save: jest.fn().mockImplementation((entity) =>
-              Promise.resolve({ id: 'test-id', ...entity }),
-            ),
+            save: jest
+              .fn()
+              .mockImplementation((entity) =>
+                Promise.resolve({ id: 'test-id', ...entity }),
+              ),
             find: jest.fn().mockResolvedValue([]),
             findOne: jest.fn().mockResolvedValue(null),
             delete: jest.fn().mockResolvedValue({ affected: 1 }),

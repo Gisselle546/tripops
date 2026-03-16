@@ -52,7 +52,9 @@ describe('TripOps API (e2e)', () => {
 
     // Replicate the middleware registered in main.ts
     app.use(cookieParser());
-    app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
+    app.useGlobalPipes(
+      new ValidationPipe({ whitelist: true, transform: true }),
+    );
 
     await app.init();
   });
@@ -88,7 +90,11 @@ describe('TripOps API (e2e)', () => {
       it('creates a new user and returns accessToken + sets refresh cookie', async () => {
         const res = await request(app.getHttpServer())
           .post('/auth/register')
-          .send({ email: TEST_EMAIL, password: TEST_PASSWORD, fullName: 'E2E Tester' })
+          .send({
+            email: TEST_EMAIL,
+            password: TEST_PASSWORD,
+            fullName: 'E2E Tester',
+          })
           .expect(201);
 
         expect(res.body.accessToken).toBeDefined();
@@ -138,7 +144,8 @@ describe('TripOps API (e2e)', () => {
         accessToken = res.body.accessToken;
         const cookies = res.headers['set-cookie'] as unknown as string[];
         refreshCookie =
-          cookies?.find((c) => c.startsWith('tripops_refresh')) ?? refreshCookie;
+          cookies?.find((c) => c.startsWith('tripops_refresh')) ??
+          refreshCookie;
       });
     });
 
@@ -199,7 +206,8 @@ describe('TripOps API (e2e)', () => {
         accessToken = res.body.accessToken;
         const cookies = res.headers['set-cookie'] as unknown as string[];
         refreshCookie =
-          cookies?.find((c) => c.startsWith('tripops_refresh')) ?? refreshCookie;
+          cookies?.find((c) => c.startsWith('tripops_refresh')) ??
+          refreshCookie;
       });
     });
   });
@@ -281,7 +289,9 @@ describe('TripOps API (e2e)', () => {
           .expect(200);
 
         expect(Array.isArray(res.body)).toBe(true);
-        expect(res.body.some((w: { id: string }) => w.id === workspaceId)).toBe(true);
+        expect(res.body.some((w: { id: string }) => w.id === workspaceId)).toBe(
+          true,
+        );
       });
     });
 
@@ -374,7 +384,9 @@ describe('TripOps API (e2e)', () => {
           .expect(200);
 
         expect(Array.isArray(res.body)).toBe(true);
-        expect(res.body.some((t: { id: string }) => t.id === tripId)).toBe(true);
+        expect(res.body.some((t: { id: string }) => t.id === tripId)).toBe(
+          true,
+        );
       });
     });
 
@@ -507,9 +519,13 @@ describe('TripOps API (e2e)', () => {
         .set('Authorization', `Bearer ${accessToken}`)
         .expect(200);
 
-      const day = res.body.days.find((d: { id: string }) => d.id === itineraryDayId);
+      const day = res.body.days.find(
+        (d: { id: string }) => d.id === itineraryDayId,
+      );
       expect(day).toBeDefined();
-      expect(day.items.some((i: { id: string }) => i.id === itineraryItemId)).toBe(true);
+      expect(
+        day.items.some((i: { id: string }) => i.id === itineraryItemId),
+      ).toBe(true);
     });
   });
 
@@ -586,7 +602,9 @@ describe('TripOps API (e2e)', () => {
           .expect(200);
 
         expect(Array.isArray(res.body)).toBe(true);
-        expect(res.body.some((b: { id: string }) => b.id === bookingId)).toBe(true);
+        expect(res.body.some((b: { id: string }) => b.id === bookingId)).toBe(
+          true,
+        );
         expect(res.body.length).toBeGreaterThanOrEqual(2);
       });
     });
@@ -707,7 +725,9 @@ describe('TripOps API (e2e)', () => {
           .expect(200);
 
         expect(Array.isArray(res.body)).toBe(true);
-        expect(res.body.some((p: { id: string }) => p.id === proposalId)).toBe(true);
+        expect(res.body.some((p: { id: string }) => p.id === proposalId)).toBe(
+          true,
+        );
       });
 
       it('returns 400 when option label is missing', () =>
@@ -750,9 +770,7 @@ describe('TripOps API (e2e)', () => {
   describe('Rules', () => {
     describe('GET /trips/:tripId/rules', () => {
       it('returns 401 without a token', () =>
-        request(app.getHttpServer())
-          .get(`/trips/${tripId}/rules`)
-          .expect(401));
+        request(app.getHttpServer()).get(`/trips/${tripId}/rules`).expect(401));
 
       it('returns an empty rule set for a new trip', async () => {
         const res = await request(app.getHttpServer())
@@ -828,9 +846,7 @@ describe('TripOps API (e2e)', () => {
   describe('Audit', () => {
     describe('GET /trips/:tripId/audit', () => {
       it('returns 401 without a token', () =>
-        request(app.getHttpServer())
-          .get(`/trips/${tripId}/audit`)
-          .expect(401));
+        request(app.getHttpServer()).get(`/trips/${tripId}/audit`).expect(401));
 
       it('returns audit log entries (actions recorded during the test run)', async () => {
         const res = await request(app.getHttpServer())
@@ -922,7 +938,9 @@ describe('TripOps API (e2e)', () => {
 
       it('returns 404 for a non-existent case id', () =>
         request(app.getHttpServer())
-          .get(`/trips/${tripId}/rebooking/cases/00000000-0000-0000-0000-000000000000`)
+          .get(
+            `/trips/${tripId}/rebooking/cases/00000000-0000-0000-0000-000000000000`,
+          )
           .set('Authorization', `Bearer ${accessToken}`)
           .expect(404));
     });
@@ -930,7 +948,9 @@ describe('TripOps API (e2e)', () => {
     describe('POST /trips/:tripId/rebooking/cases/:caseId/generate-options', () => {
       it('generates rebooking options for the case', async () => {
         const res = await request(app.getHttpServer())
-          .post(`/trips/${tripId}/rebooking/cases/${rebookingCaseId}/generate-options`)
+          .post(
+            `/trips/${tripId}/rebooking/cases/${rebookingCaseId}/generate-options`,
+          )
           .set('Authorization', `Bearer ${accessToken}`)
           .send({ count: 2 })
           .expect(201);
@@ -971,7 +991,9 @@ describe('TripOps API (e2e)', () => {
 
     describe('GET /notifications/unread-count', () => {
       it('returns 401 without a token', () =>
-        request(app.getHttpServer()).get('/notifications/unread-count').expect(401));
+        request(app.getHttpServer())
+          .get('/notifications/unread-count')
+          .expect(401));
 
       it('returns { count: number }', async () => {
         const res = await request(app.getHttpServer())
@@ -1057,7 +1079,9 @@ describe('TripOps API (e2e)', () => {
     it.each(unauthenticatedCases)(
       '$method $url → 401',
       async ({ method, url }) => {
-        await (request(app.getHttpServer()) as Record<string, any>)[method](url).expect(401);
+        await (request(app.getHttpServer()) as Record<string, any>)
+          [method](url)
+          .expect(401);
       },
     );
   });

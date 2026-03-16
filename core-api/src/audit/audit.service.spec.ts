@@ -15,9 +15,11 @@ describe('AuditService', () => {
           provide: getRepositoryToken(AuditLog),
           useValue: {
             create: jest.fn().mockImplementation((dto) => dto),
-            save: jest.fn().mockImplementation((entity) =>
-              Promise.resolve({ id: 'test-id', ...entity }),
-            ),
+            save: jest
+              .fn()
+              .mockImplementation((entity) =>
+                Promise.resolve({ id: 'test-id', ...entity }),
+              ),
             find: jest.fn().mockResolvedValue([]),
             count: jest.fn().mockResolvedValue(0),
           },
@@ -25,7 +27,9 @@ describe('AuditService', () => {
         {
           provide: getRepositoryToken(TripMember),
           useValue: {
-            findOne: jest.fn().mockResolvedValue({ userId: 'user-id', tripId: 'trip-id' }),
+            findOne: jest
+              .fn()
+              .mockResolvedValue({ userId: 'user-id', tripId: 'trip-id' }),
           },
         },
       ],

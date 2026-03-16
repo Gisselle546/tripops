@@ -138,7 +138,10 @@ export class NotificationEventsHandler {
         },
       );
     } catch (err) {
-      this.logger.error('onRebookingOptionsReady notification failed', err.stack);
+      this.logger.error(
+        'onRebookingOptionsReady notification failed',
+        err.stack,
+      );
     }
   }
 
@@ -192,7 +195,10 @@ export class NotificationEventsHandler {
         },
       );
     } catch (err) {
-      this.logger.error('onItineraryItemCreated notification failed', err.stack);
+      this.logger.error(
+        'onItineraryItemCreated notification failed',
+        err.stack,
+      );
     }
   }
 
