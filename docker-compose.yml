@@ -1,0 +1,70 @@
+services:
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:3000
+    depends_on:
+      backend:
+        condition: service_healthy
+    networks:
+      - tripops-net
+    restart: unless-stopped
+
+  backend:
+    build:
+      context: ./core-api
+      dockerfile: Dockerfile
+    env_file:
+      - ./core-api/.env
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - FRONTEND_URL=http://localhost:3001
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          'node -e "require(''http'').get(''http://localhost:3000'',r=>process.exit(r.statusCode>=500?1:0)).on(''error'',()=>process.exit(1))"',
+        ]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - tripops-net
+    restart: unless-stopped
+
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "${POSTGRES_PORT}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    networks:
+      - tripops-net
+    restart: unless-stopped
+
+volumes:
+  pgdata:
+
+networks:
+  tripops-net:
+    driver: bridge

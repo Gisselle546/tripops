@@ -1,0 +1,345 @@
+/* ==========================================================================
+   TripOps — Tailwind CSS v4 global.css (CSS-first, explicit layers)
+   ========================================================================== */
+
+/* (Optional) App font — keep in CSS so “global.css owns everything”.
+   If you self-host fonts, remove this and point to your local files. */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+
+/* 0) Declare layer order FIRST (prevents weird precedence bugs) */
+@layer theme, base, components, utilities;
+
+/* 1) Tailwind v4 explicit-layer imports (canonical v4 pattern) */
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/preflight.css" layer(base);
+@import "tailwindcss/utilities.css" layer(utilities);
+
+/* 2) Dark mode: make the `dark:` variant work with <html class="dark"> */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ==========================================================================
+   3) Theme tokens (your “new tailwind.config”)
+   - Based on your screenshot palette: soft app background + deep navy sidebar +
+     bright action blue + subtle borders.
+   ========================================================================== */
+@theme {
+  /* Fonts */
+  --font-sans:
+    "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+  --font-mono:
+    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+    monospace;
+
+  /* Radii */
+  --radius-xs: 0.375rem;
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+
+  /* Shadows (matches “card” feel in screenshot) */
+  --shadow-card: 0 10px 30px rgb(15 23 42 / 0.08);
+  --shadow-float: 0 18px 50px rgb(15 23 42 / 0.14);
+
+  /* Spacing helpers */
+  --gutter: 1.25rem; /* general page padding */
+  --card-pad: 1rem;
+
+  /* ---- Light mode tokens ---- */
+  --color-bg: rgb(239 241 247); /* app canvas */
+  --color-surface: rgb(255 255 255); /* cards/panels */
+  --color-surface-2: rgb(246 248 252); /* inputs/secondary panels */
+  --color-border: rgb(220 228 242); /* subtle borders */
+  --color-border-strong: rgb(202 215 236);
+
+  --color-text: rgb(18 32 52); /* main text */
+  --color-text-muted: rgb(96 116 146); /* secondary text */
+  --color-text-faint: rgb(138 155 180); /* placeholders */
+
+  --color-primary: rgb(35 118 207); /* CTA blue */
+  --color-primary-600: rgb(25 102 184);
+  --color-primary-700: rgb(20 86 160);
+
+  --color-sidebar: rgb(36 71 123); /* deep navy */
+  --color-sidebar-2: rgb(48 85 137); /* lighter navy */
+  --color-sidebar-text: rgb(232 240 255); /* sidebar text */
+
+  --color-success: rgb(16 185 129);
+  --color-warning: rgb(245 158 11);
+  --color-danger: rgb(239 68 68);
+
+  /* ---- Dark mode tokens ----
+     Keep contrast high + preserve “blue product identity” */
+  --color-bg-dark: rgb(12 18 30);
+  --color-surface-dark: rgb(17 26 43);
+  --color-surface-2-dark: rgb(22 34 56);
+  --color-border-dark: rgb(42 58 88);
+  --color-border-strong-dark: rgb(57 78 116);
+
+  --color-text-dark: rgb(235 242 255);
+  --color-text-muted-dark: rgb(168 187 220);
+  --color-text-faint-dark: rgb(132 154 192);
+
+  --color-primary-dark: rgb(99 156 218);
+  --color-primary-600-dark: rgb(78 141 210);
+  --color-primary-700-dark: rgb(63 123 190);
+
+  --color-sidebar-dark: rgb(10 24 49);
+  --color-sidebar-2-dark: rgb(15 33 64);
+  --color-sidebar-text-dark: rgb(228 238 255);
+}
+
+/* ==========================================================================
+   4) Base layer: global defaults + apply tokens to the whole app
+   ========================================================================== */
+@layer base {
+  html,
+  body {
+    height: 100%;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    background: var(--color-bg);
+    color: var(--color-text);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Default border color so borders look consistent everywhere */
+  *,
+  ::before,
+  ::after {
+    border-color: var(--color-border);
+  }
+
+  /* Inputs feel consistent with your UI */
+  input,
+  textarea,
+  select,
+  button {
+    font: inherit;
+  }
+
+  /* Dark mode token swap (class-based) */
+  .dark body {
+    background: var(--color-bg-dark);
+    color: var(--color-text-dark);
+  }
+  .dark *,
+  .dark ::before,
+  .dark ::after {
+    border-color: var(--color-border-dark);
+  }
+}
+
+/* ==========================================================================
+   5) Components layer: reusable “named” UI pieces (card, button, nav, input)
+   - Utilities can still override these when needed.
+   ========================================================================== */
+@layer components {
+  /* Page shell primitives (matches your layout: sidebar + header + content) */
+  .tp-app {
+    @apply min-h-screen;
+    padding: var(--gutter);
+  }
+
+  .tp-card {
+    background: var(--color-surface);
+    box-shadow: var(--shadow-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--card-pad);
+  }
+  .dark .tp-card {
+    background: var(--color-surface-dark);
+    border-color: var(--color-border-dark);
+  }
+
+  .tp-panel {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+  }
+  .dark .tp-panel {
+    background: var(--color-surface-dark);
+    border-color: var(--color-border-dark);
+  }
+
+  .tp-topbar {
+    @apply w-full flex items-center gap-3;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    padding: 0.75rem 1rem;
+  }
+  .dark .tp-topbar {
+    background: var(--color-surface-dark);
+    border-color: var(--color-border-dark);
+  }
+
+  .tp-input {
+    @apply w-full outline-none;
+    background: var(--color-surface-2);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: 0.625rem 0.75rem;
+    color: var(--color-text);
+  }
+  .tp-input::placeholder {
+    color: var(--color-text-faint);
+  }
+  .tp-input:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 4px rgb(35 118 207 / 0.15);
+  }
+  .dark .tp-input {
+    background: var(--color-surface-2-dark);
+    border-color: var(--color-border-dark);
+    color: var(--color-text-dark);
+  }
+  .dark .tp-input::placeholder {
+    color: var(--color-text-faint-dark);
+  }
+  .dark .tp-input:focus {
+    border-color: var(--color-primary-dark);
+    box-shadow: 0 0 0 4px rgb(99 156 218 / 0.18);
+  }
+
+  .tp-btn {
+    @apply inline-flex items-center justify-center gap-2 select-none;
+    border-radius: var(--radius-md);
+    padding: 0.55rem 0.85rem;
+    font-weight: 600;
+    border: 1px solid transparent;
+    transition:
+      transform 120ms ease,
+      box-shadow 120ms ease,
+      background 120ms ease,
+      border-color 120ms ease;
+  }
+  .tp-btn:active {
+    transform: translateY(1px);
+  }
+
+  .tp-btn-primary {
+    background: var(--color-primary);
+    color: white;
+    box-shadow: 0 10px 25px rgb(35 118 207 / 0.2);
+  }
+  .tp-btn-primary:hover {
+    background: var(--color-primary-600);
+  }
+  .dark .tp-btn-primary {
+    background: var(--color-primary-dark);
+    box-shadow: 0 10px 25px rgb(99 156 218 / 0.22);
+  }
+  .dark .tp-btn-primary:hover {
+    background: var(--color-primary-600-dark);
+  }
+
+  .tp-btn-ghost {
+    background: transparent;
+    color: var(--color-text);
+    border-color: var(--color-border);
+  }
+  .tp-btn-ghost:hover {
+    background: rgb(15 23 42 / 0.04);
+  }
+  .dark .tp-btn-ghost {
+    color: var(--color-text-dark);
+    border-color: var(--color-border-dark);
+  }
+  .dark .tp-btn-ghost:hover {
+    background: rgb(235 242 255 / 0.06);
+  }
+
+  /* Sidebar styling (matches the deep-blue left nav) */
+  .tp-sidebar {
+    color: var(--color-sidebar-text);
+    background: linear-gradient(
+      180deg,
+      var(--color-sidebar-2),
+      var(--color-sidebar)
+    );
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+  .dark .tp-sidebar {
+    color: var(--color-sidebar-text-dark);
+    background: linear-gradient(
+      180deg,
+      var(--color-sidebar-2-dark),
+      var(--color-sidebar-dark)
+    );
+  }
+
+  .tp-nav-item {
+    @apply flex items-center gap-2 rounded-md px-3 py-2;
+    color: color-mix(in srgb, var(--color-sidebar-text) 88%, transparent);
+  }
+  .tp-nav-item:hover {
+    background: rgb(255 255 255 / 0.1);
+    color: var(--color-sidebar-text);
+  }
+  .tp-nav-item.is-active {
+    background: rgb(255 255 255 / 0.16);
+    color: var(--color-sidebar-text);
+  }
+}
+
+/* ==========================================================================
+   6) Utilities: small reusable layout helpers (stop repeating flex centering etc.)
+   - Tailwind v4: prefer @utility for “first-class” custom utilities.
+   ========================================================================== */
+
+/* Flex centering (your “don’t repeat this everywhere” requirement) */
+@utility center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Row/column stacks with default gaps */
+@utility hstack {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+@utility vstack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* Common layout: page container + grid */
+@utility page {
+  padding: var(--gutter);
+}
+@utility container-app {
+  width: 100%;
+  max-width: 1200px;
+  margin-inline: auto;
+}
+@utility grid-dashboard {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr;
+}
+@utility grid-dashboard-2 {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 2fr 1fr;
+}
+
+/* Quick text helpers that match your UI tone */
+@utility text-muted {
+  color: var(--color-text-muted);
+}
+@utility text-faint {
+  color: var(--color-text-faint);
+}
+.dark .text-muted {
+  color: var(--color-text-muted-dark);
+}
+.dark .text-faint {
+  color: var(--color-text-faint-dark);
+}

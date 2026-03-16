@@ -1,0 +1,36 @@
+<!-- TripOps logo - save as tripops-logo.svg -->
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" aria-labelledby="title desc" role="img">
+  <title id="title">TripOps</title>
+  <desc id="desc">TripOps logo: mountain peak and wave in circle</desc>
+  <defs>
+    <linearGradient id="g1" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#0B5BB8"></stop>
+      <stop offset="1" stop-color="#17A589"></stop>
+    </linearGradient>
+    <clipPath id="c">
+      <circle cx="256" cy="256" r="240"></circle>
+    </clipPath>
+  </defs>
+
+  <g clip-path="url(#c)">
+    <!-- background circle -->
+    <rect width="512" height="512" rx="64" fill="#F6F8FB"></rect>
+    <circle cx="256" cy="256" r="240" fill="url(#g1)"></circle>
+
+    <!-- mountain silhouette -->
+    <path d="M90 340 L210 150 L278 240 L356 120 L422 340 Z" fill="#FFFFFF" opacity="0.95" transform="translate(10,0) scale(0.95)"></path>
+
+    <!-- wave / route curve -->
+    <path d="M60,380
+             C140,330 210,370 300,340
+             C360,320 420,360 452,380" fill="none" stroke="#FFFFFF" stroke-width="18" stroke-linecap="round" stroke-linejoin="round" opacity="0.95"></path>
+
+    <!-- dot for waypoint -->
+    <circle cx="300" cy="340" r="10" fill="#17A589" stroke="#fff" stroke-width="3"></circle>
+  </g>
+
+  <!-- logotype to the right (optional; use only when large enough) -->
+  <g transform="translate(20,380)">
+    <text x="120" y="52" font-family="Inter, Roboto, system-ui, -apple-system, 'Segoe UI', 'Helvetica Neue'" font-weight="700" font-size="44" fill="#0B5BB8">TripOps</text>
+  </g>
+</svg>
