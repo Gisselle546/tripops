@@ -55,4 +55,14 @@ export class TripsController {
   getTrip(@Req() req: { user: AuthUser }, @Param('tripId') tripId: string) {
     return this.tripsService.getTripById(req.user.userId, tripId);
   }
+
+  @RequiredTripRole(TripRole.VIEWER)
+  @UseGuards(TripRoleGuard)
+  @Get('trips/:tripId/members')
+  listTripMembers(
+    @Req() req: { user: AuthUser },
+    @Param('tripId') tripId: string,
+  ) {
+    return this.tripsService.listTripMembers(req.user.userId, tripId);
+  }
 }

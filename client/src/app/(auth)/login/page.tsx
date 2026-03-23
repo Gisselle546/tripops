@@ -52,6 +52,14 @@ export default function LoginPage() {
 
   const errorMessage = login.isError ? getErrorMessage(login.error) : null;
 
+  function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    login.mutate({
+      email: email.trim(),
+      password,
+    });
+  }
+
   return (
     <main className="relative min-h-screen overflow-hidden bg-[radial-gradient(circle_at_top_left,rgba(135,181,255,0.42),transparent_32%),linear-gradient(135deg,#f4f8ff_0%,#e8eef8_46%,#dfe6f3_100%)] text-slate-950">
       <div className="absolute inset-0 pointer-events-none">
@@ -137,15 +145,7 @@ export default function LoginPage() {
               </div>
             </div>
 
-            <form
-              className="mt-8 space-y-5"
-              action={() =>
-                login.mutate({
-                  email: email.trim(),
-                  password,
-                })
-              }
-            >
+            <form className="mt-8 space-y-5" onSubmit={handleSubmit}>
               <div className="space-y-2">
                 <label
                   className="text-sm font-medium text-slate-700"

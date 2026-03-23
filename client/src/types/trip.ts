@@ -6,6 +6,7 @@ export interface Trip {
   startDate: string; // YYYY-MM-DD
   endDate: string;
   budgetTarget?: number; // cents
+  coverImage?: string;
   createdByUserId: string;
   createdAt: string;
   updatedAt: string;

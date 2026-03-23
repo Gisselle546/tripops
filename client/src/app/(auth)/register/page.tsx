@@ -60,7 +60,9 @@ export default function RegisterPage() {
     passwordError ||
     (register.isError ? getErrorMessage(register.error) : null);
 
-  function submitRegistration() {
+  function submitRegistration(e: React.FormEvent) {
+    e.preventDefault();
+
     if (password !== confirmPassword) {
       setPasswordError("Passwords do not match.");
       return;
@@ -109,7 +111,7 @@ export default function RegisterPage() {
               </div>
             </div>
 
-            <form className="mt-8 space-y-5" action={submitRegistration}>
+            <form className="mt-8 space-y-5" onSubmit={submitRegistration}>
               <div className="space-y-2">
                 <label
                   className="text-sm font-medium text-slate-700"

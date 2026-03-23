@@ -9,12 +9,12 @@ async function bootstrap() {
   const config = app.get(ConfigService);
 
   app.enableCors({
-    origin: config.get<string>('FRONTEND_URL') ?? 'http://localhost:5173',
+    origin: config.get<string>('FRONTEND_URL') ?? 'http://localhost:3000',
     credentials: true,
   });
 
   app.use(cookieParser());
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
-  await app.listen(process.env.PORT ?? 3000);
+  await app.listen(process.env.PORT ?? 7654);
 }
 bootstrap();

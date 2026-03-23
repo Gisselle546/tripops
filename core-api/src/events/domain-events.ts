@@ -28,6 +28,17 @@ export const DomainEvents = {
   RULESET_UPSERTED: 'rules.ruleset.upserted',
   RULES_EVALUATED: 'rules.evaluated',
 
+  // Tasks
+  TASK_CREATED: 'task.created',
+  TASK_UPDATED: 'task.updated',
+  TASK_DELETED: 'task.deleted',
+  TASK_COMPLETED: 'task.completed',
+
+  // Documents
+  DOCUMENT_UPLOADED: 'document.uploaded',
+  DOCUMENT_UPDATED: 'document.updated',
+  DOCUMENT_DELETED: 'document.deleted',
+
   // Rebooking
   DISRUPTION_SIMULATED: 'rebooking.disruption.simulated',
   REBOOKING_OPTIONS_GENERATED: 'rebooking.options.generated',

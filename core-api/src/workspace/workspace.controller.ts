@@ -1,8 +1,10 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
+  Patch,
   Post,
   Req,
   UseGuards,
@@ -13,6 +15,9 @@ import { RequiredWorkspaceRole } from '../auth/decorators/required-workspace-rol
 import { WorkspaceRole } from './entities/workspace-member.entity';
 import { WorkspaceService } from './workspace.service';
 import { CreateWorkspaceDto } from './dto/create-workspace.dto';
+import { UpdateWorkspaceDto } from './dto/update-workspace.dto';
+import { InviteMemberDto } from './dto/invite-member.dto';
+import { UpdateMemberRoleDto } from './dto/update-member-role.dto';
 import type { AuthUser } from '../auth/types/auth-user';
 
 @Controller('workspaces')
@@ -20,25 +25,89 @@ import type { AuthUser } from '../auth/types/auth-user';
 export class WorkspaceController {
   constructor(private readonly workspaceService: WorkspaceService) {}
 
-  // No workspace role needed — user is *creating* the workspace (becomes owner)
   @Post()
   create(@Req() req: { user: AuthUser }, @Body() dto: CreateWorkspaceDto) {
     return this.workspaceService.createWorkspace(req.user.userId, dto);
   }
 
-  // No workspace role needed — service scopes to user's memberships already
   @Get()
   listMine(@Req() req: { user: AuthUser }) {
     return this.workspaceService.listMyWorkspaces(req.user.userId);
   }
 
-  // Any workspace member (GUEST and above) can view the workspace
   @RequiredWorkspaceRole(WorkspaceRole.GUEST)
   @Get(':workspaceId')
-  getOne(
+  getById(
     @Req() req: { user: AuthUser },
     @Param('workspaceId') workspaceId: string,
   ) {
     return this.workspaceService.getWorkspaceById(req.user.userId, workspaceId);
+  }
+
+  @RequiredWorkspaceRole(WorkspaceRole.ADMIN)
+  @Patch(':workspaceId')
+  update(
+    @Req() req: { user: AuthUser },
+    @Param('workspaceId') workspaceId: string,
+    @Body() dto: UpdateWorkspaceDto,
+  ) {
+    return this.workspaceService.updateWorkspace(
+      req.user.userId,
+      workspaceId,
+      dto,
+    );
+  }
+
+  @RequiredWorkspaceRole(WorkspaceRole.GUEST)
+  @Get(':workspaceId/members')
+  listMembers(
+    @Req() req: { user: AuthUser },
+    @Param('workspaceId') workspaceId: string,
+  ) {
+    return this.workspaceService.listMembers(req.user.userId, workspaceId);
+  }
+
+  @RequiredWorkspaceRole(WorkspaceRole.ADMIN)
+  @Post(':workspaceId/members')
+  inviteMember(
+    @Req() req: { user: AuthUser },
+    @Param('workspaceId') workspaceId: string,
+    @Body() dto: InviteMemberDto,
+  ) {
+    return this.workspaceService.inviteMember(
+      req.user.userId,
+      workspaceId,
+      dto,
+    );
+  }
+
+  @RequiredWorkspaceRole(WorkspaceRole.OWNER)
+  @Patch(':workspaceId/members/:memberId/role')
+  updateMemberRole(
+    @Req() req: { user: AuthUser },
+    @Param('workspaceId') workspaceId: string,
+    @Param('memberId') memberId: string,
+    @Body() dto: UpdateMemberRoleDto,
+  ) {
+    return this.workspaceService.updateMemberRole(
+      req.user.userId,
+      workspaceId,
+      memberId,
+      dto.role,
+    );
+  }
+
+  @RequiredWorkspaceRole(WorkspaceRole.ADMIN)
+  @Delete(':workspaceId/members/:memberId')
+  removeMember(
+    @Req() req: { user: AuthUser },
+    @Param('workspaceId') workspaceId: string,
+    @Param('memberId') memberId: string,
+  ) {
+    return this.workspaceService.removeMember(
+      req.user.userId,
+      workspaceId,
+      memberId,
+    );
   }
 }

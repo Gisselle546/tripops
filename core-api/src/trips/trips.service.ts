@@ -40,6 +40,7 @@ export class TripsService {
       startDate: t.startDate,
       endDate: t.endDate,
       budgetTarget: t.budgetTarget ?? undefined,
+      coverImage: t.coverImage ?? undefined,
       createdByUserId: t.createdByUserId,
       createdAt: t.createdAt,
       updatedAt: t.updatedAt,
@@ -62,6 +63,7 @@ export class TripsService {
         startDate: dto.startDate,
         endDate: dto.endDate,
         budgetTarget: dto.budgetTarget,
+        coverImage: dto.coverImage,
         createdByUserId: userId,
       }),
     );
@@ -133,5 +135,22 @@ export class TripsService {
 
     if (!trip) throw new NotFoundException('Trip not found.');
     return this.toDto(trip);
+  }
+  async listTripMembers(userId: string, tripId: string) {
+    // TripRoleGuard already verifies userId is in the trip before this runs
+    const members = await this.tripMembersRepo.find({
+      where: { tripId },
+      order: { createdAt: 'ASC' },
+    });
+
+    return members.map((m) => ({
+      id: m.id,
+      tripId: m.tripId,
+      userId: m.userId,
+      role: m.role,
+      status: m.status,
+      createdAt: m.createdAt,
+      updatedAt: m.updatedAt,
+    }));
   }
 }

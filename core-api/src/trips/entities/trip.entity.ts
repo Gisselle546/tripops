@@ -34,6 +34,9 @@ export class Trip extends AppBaseEntity {
   @Column({ type: 'int', nullable: true })
   budgetTarget?: number;
 
+  @Column({ nullable: true })
+  coverImage?: string;
+
   @Index()
   @Column()
   createdByUserId: string;

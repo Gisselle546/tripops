@@ -10,6 +10,9 @@ export class Workspace extends AppBaseEntity {
   @Column({ nullable: true })
   description?: string;
 
+  @Column({ nullable: true })
+  coverImage?: string;
+
   @OneToMany(() => WorkspaceMember, (m) => m.workspace)
   members: WorkspaceMember[];
 }

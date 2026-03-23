@@ -1,24 +1,32 @@
-export type NotificationKind =
-  | "BOOKING_CONFIRMED"
-  | "BOOKING_CANCELED"
-  | "TRIP_INVITE"
+export type NotifactionType =
+  | "MENTION"
+  | "COMMENT"
+  | "PROPOSAL"
+  | "VOTE"
+  | "BOOKING_UPDATED"
+  | "REBOOKING_OPTIONS_READY"
+  | "REBOOKING_DECIDED"
+  | "REBOOKING_APPLIED"
+  | "TRIP_CREATED"
   | "ITINERARY_UPDATED"
-  | "PROPOSAL_DECIDED"
-  | "DISRUPTION_SIMULATED";
+  | "RULES_VIOLATION"
+  | "REMINDER"
+  | "SYSTEM";
+
+export type NotificationChannel = "IN_APP" | "EMAIL";
 
 export interface Notification {
   id: string;
-  userId: string;
-  kind: NotificationKind;
-  tripId?: string | null;
-  workspaceId?: string | null;
-  payload: Record<string, unknown>;
-  readAt?: string | null;
+  recipientUserId: string;
+  type: NotifactionType;
+  channel: NotificationChannel;
+  title: string;
+  body?: string;
+  link?: string;
+  tripId?: string;
+  actorUserId?: string;
+  meta?: Record<string, unknown>;
+  read: boolean;
+  readAt?: string;
   createdAt: string;
-}
-
-export interface NotificationPage {
-  items: Notification[];
-  total: number;
-  unreadCount: number;
 }

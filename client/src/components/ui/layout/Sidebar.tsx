@@ -1,15 +1,32 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 import Image from "next/image";
+import { useAuthStore } from "@/stores/auth-store";
+import { useWorkspaceStore } from "@/stores/workspace-store";
+import { useWorkspace } from "@/hooks/use-workspaces";
+import { useLogout } from "@/hooks/use-auth";
 
 type NavItem = { href: string; label: string; icon: string };
 
 export default function Sidebar() {
   const pathname = usePathname() || "/";
+  const router = useRouter();
   const [collapsed, setCollapsed] = useState(false);
+  const user = useAuthStore((s) => s.user);
+  const activeWorkspaceId = useWorkspaceStore((s) => s.activeWorkspaceId);
+  const { data: activeWorkspace } = useWorkspace(activeWorkspaceId ?? "");
+  const logout = useLogout();
+
+  const displayName = user?.fullName || user?.email?.split("@")[0] || "User";
+  const initials = displayName
+    .split(" ")
+    .map((w) => w[0])
+    .join("")
+    .toUpperCase()
+    .slice(0, 2);
 
   const nav: NavItem[] = useMemo(
     () => [
@@ -71,35 +88,38 @@ export default function Sidebar() {
       </div>
 
       {/* Workspace quick switch */}
-      <div className="px-3 py-3 border-t border-white/10">
-        {!collapsed ? (
-          <div className="rounded-xl bg-white/8 px-3 py-2.5 border border-white/10">
-            <div className="flex items-start justify-between gap-3">
-              <div className="min-w-0">
-                <div className="text-sm font-semibold truncate">
-                  Paris Getaway
+      {activeWorkspaceId && (
+        <div className="px-3 py-3 border-t border-white/10">
+          {!collapsed ? (
+            <div className="rounded-xl bg-white/8 px-3 py-2.5 border border-white/10">
+              <div className="flex items-start justify-between gap-3">
+                <div className="min-w-0">
+                  <div className="text-sm font-semibold truncate">
+                    {activeWorkspace?.name ?? "Workspace"}
+                  </div>
+                  <div className="text-xs text-white/70 truncate">
+                    Active workspace
+                  </div>
                 </div>
-                <div className="text-xs text-white/70 truncate">
-                  Active workspace
-                </div>
+                <button
+                  onClick={() => router.push("/workspaces")}
+                  className={[
+                    "shrink-0 text-xs font-semibold px-2.5 py-1 rounded-md",
+                    "bg-white/10 hover:bg-white/14 transition",
+                    "border border-white/10",
+                  ].join(" ")}
+                >
+                  Switch
+                </button>
               </div>
-              <button
-                className={[
-                  "shrink-0 text-xs font-semibold px-2.5 py-1 rounded-md",
-                  "bg-white/10 hover:bg-white/14 transition",
-                  "border border-white/10",
-                ].join(" ")}
-              >
-                Switch
-              </button>
             </div>
-          </div>
-        ) : (
-          <div className="mx-auto w-10 h-10 rounded-xl bg-white/10 border border-white/10 grid place-items-center text-sm font-semibold">
-            P
-          </div>
-        )}
-      </div>
+          ) : (
+            <div className="mx-auto w-10 h-10 rounded-xl bg-white/10 border border-white/10 grid place-items-center text-sm font-semibold">
+              {activeWorkspace?.name?.[0]?.toUpperCase() ?? "W"}
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Nav */}
       <nav className="mt-3 px-2 flex-1 overflow-y-auto">
@@ -164,6 +184,7 @@ export default function Sidebar() {
       {/* Bottom CTA + profile */}
       <div className="px-3 pb-4 border-t border-white/10">
         <button
+          onClick={() => router.push("/trips/new")}
           className={[
             "w-full mt-3",
             "rounded-xl py-2.5 font-semibold",
@@ -184,18 +205,40 @@ export default function Sidebar() {
           ].join(" ")}
         >
           <div className="w-9 h-9 rounded-xl bg-white/10 border border-white/10 grid place-items-center font-semibold text-sm">
-            SJ
+            {initials}
           </div>
 
           {!collapsed && (
-            <div className="min-w-0">
+            <div className="min-w-0 flex-1">
               <div className="text-sm text-white font-medium truncate">
-                Sarah Johnson
+                {displayName}
               </div>
-              <div className="text-xs text-white/70 truncate">Owner</div>
+              <div className="text-xs text-white/70 truncate">
+                {user?.email ?? ""}
+              </div>
             </div>
           )}
+
+          {!collapsed && (
+            <button
+              onClick={() => logout.mutate()}
+              title="Log out"
+              className="shrink-0 rounded-lg p-1.5 hover:bg-white/14 transition text-white/70 hover:text-white"
+            >
+              🚪
+            </button>
+          )}
         </div>
+
+        {collapsed && (
+          <button
+            onClick={() => logout.mutate()}
+            title="Log out"
+            className="w-full mt-2 rounded-xl py-2 text-sm hover:bg-white/14 transition text-white/70 hover:text-white"
+          >
+            🚪
+          </button>
+        )}
       </div>
     </aside>
   );

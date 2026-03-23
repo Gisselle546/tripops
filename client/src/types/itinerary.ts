@@ -4,9 +4,20 @@ export type ItineraryItemType =
   | "ACTIVITY"
   | "RESTAURANT"
   | "TRANSPORT"
-  | "NOTE";
+  | "NOTE"
+  | "OTHER";
 
-export type ItineraryItemStatus = "IDEA" | "PLANNED" | "BOOKED" | "CANCELED";
+export type ItineraryItemStatus =
+  | "FLIGHT"
+  | "HOTEL"
+  | "ACTIVITY"
+  | "RESTAURANT"
+  | "TRANSPORT"
+  | "NOTE"
+  | "OTHER"
+  | "CANCELLED"
+  | "DELAYED"
+  | "COMPLETED";
 
 export interface ItineraryItem {
   id: string;
@@ -19,8 +30,12 @@ export interface ItineraryItem {
   endsAt?: string | null;
   locationName?: string | null;
   address?: string | null;
+  lat?: number;
+  lng?: number;
+  estimatedCost?: number;
   bookingId?: string | null;
   notes?: string | null;
+  createdByUserId: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -28,8 +43,8 @@ export interface ItineraryItem {
 export interface ItineraryDay {
   id: string;
   tripId: string;
-  date: string; // ISO date string
-  dayIndex?: number | null;
+  date: string;
+  dayIndex: number;
   items: ItineraryItem[];
   createdAt: string;
   updatedAt: string;
@@ -38,4 +53,5 @@ export interface ItineraryDay {
 export interface Itinerary {
   days: ItineraryDay[];
   unassigned: ItineraryItem[];
+  unassignedItems: ItineraryItem[];
 }

@@ -1,5 +1,6 @@
 import Sidebar from "@/components/ui/layout/Sidebar";
 import Topbar from "@/components/ui/layout/Topbar";
+import AuthGuard from "@/components/ui/layout/AuthGuard";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -13,24 +14,22 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body>
-        <div className="flex h-screen">
-          {/* Persistent sidebar */}
-          <aside className="border-r border-border">
-            <Sidebar />
-          </aside>
+    <div className="flex h-screen">
+      <AuthGuard>
+        {/* Persistent sidebar */}
+        <aside className="border-r border-border">
+          <Sidebar />
+        </aside>
 
-          {/* Main content */}
-          <div className="flex-1 flex flex-col">
-            <header className="sticky top-0 z-40 ">
-              <Topbar />
-            </header>
+        {/* Main content */}
+        <div className="flex-1 flex flex-col">
+          <header className="sticky top-0 z-40 ">
+            <Topbar />
+          </header>
 
-            <main className="flex-1 overflow-auto p-6">{children}</main>
-          </div>
+          <main className="flex-1 overflow-auto p-6">{children}</main>
         </div>
-      </body>
-    </html>
+      </AuthGuard>
+    </div>
   );
 }

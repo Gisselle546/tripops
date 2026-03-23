@@ -17,6 +17,8 @@ import { AuditModule } from './audit/audit.module';
 import { EventsModule } from './events/events.module';
 import { NotificationsModule } from './notifications/notifications.module';
 import { JobsModule } from './jobs/jobs.module';
+import { TasksModule } from './tasks/tasks.module';
+import { DocumentsModule } from './documents/documents.module';
 
 @Module({
   imports: [
@@ -58,6 +60,8 @@ import { JobsModule } from './jobs/jobs.module';
     AuditModule,
     NotificationsModule,
     JobsModule,
+    TasksModule,
+    DocumentsModule,
   ],
   controllers: [],
   providers: [

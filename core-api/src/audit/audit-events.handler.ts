@@ -39,6 +39,15 @@ export class AuditEventsHandler {
     [DomainEvents.RULESET_UPSERTED]: AuditAction.RULESET_UPSERTED,
     [DomainEvents.RULES_EVALUATED]: AuditAction.RULES_EVALUATED,
 
+    [DomainEvents.TASK_CREATED]: AuditAction.TASK_CREATED,
+    [DomainEvents.TASK_UPDATED]: AuditAction.TASK_UPDATED,
+    [DomainEvents.TASK_DELETED]: AuditAction.TASK_DELETED,
+    [DomainEvents.TASK_COMPLETED]: AuditAction.TASK_COMPLETED,
+
+    [DomainEvents.DOCUMENT_UPLOADED]: AuditAction.DOCUMENT_UPLOADED,
+    [DomainEvents.DOCUMENT_UPDATED]: AuditAction.DOCUMENT_UPDATED,
+    [DomainEvents.DOCUMENT_DELETED]: AuditAction.DOCUMENT_DELETED,
+
     [DomainEvents.DISRUPTION_SIMULATED]: AuditAction.DISRUPTION_SIMULATED,
     [DomainEvents.REBOOKING_OPTIONS_GENERATED]:
       AuditAction.REBOOKING_OPTIONS_GENERATED,
@@ -141,6 +150,41 @@ export class AuditEventsHandler {
 
   @OnEvent(DomainEvents.RULES_EVALUATED)
   async onRulesEvaluated(e: DomainEventPayload) {
+    await this.writeAuditLog(e);
+  }
+
+  @OnEvent(DomainEvents.TASK_CREATED)
+  async onTaskCreated(e: DomainEventPayload) {
+    await this.writeAuditLog(e);
+  }
+
+  @OnEvent(DomainEvents.TASK_UPDATED)
+  async onTaskUpdated(e: DomainEventPayload) {
+    await this.writeAuditLog(e);
+  }
+
+  @OnEvent(DomainEvents.TASK_DELETED)
+  async onTaskDeleted(e: DomainEventPayload) {
+    await this.writeAuditLog(e);
+  }
+
+  @OnEvent(DomainEvents.TASK_COMPLETED)
+  async onTaskCompleted(e: DomainEventPayload) {
+    await this.writeAuditLog(e);
+  }
+
+  @OnEvent(DomainEvents.DOCUMENT_UPLOADED)
+  async onDocumentUploaded(e: DomainEventPayload) {
+    await this.writeAuditLog(e);
+  }
+
+  @OnEvent(DomainEvents.DOCUMENT_UPDATED)
+  async onDocumentUpdated(e: DomainEventPayload) {
+    await this.writeAuditLog(e);
+  }
+
+  @OnEvent(DomainEvents.DOCUMENT_DELETED)
+  async onDocumentDeleted(e: DomainEventPayload) {
     await this.writeAuditLog(e);
   }
 

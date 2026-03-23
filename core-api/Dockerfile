@@ -25,5 +25,5 @@ RUN pnpm install --frozen-lockfile --production
 
 COPY --from=builder /app/dist ./dist
 
-EXPOSE 3000
+EXPOSE 7654
 CMD ["node", "dist/main"]

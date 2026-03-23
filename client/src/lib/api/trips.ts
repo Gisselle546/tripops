@@ -1,5 +1,6 @@
 import { apiClient } from "./client";
 import type { Trip } from "@/types/trip";
+import type { TripMember } from "@/types/workspace";
 import type { AxiosResponse } from "axios";
 
 export interface CreateTripBody {
@@ -8,6 +9,7 @@ export interface CreateTripBody {
   startDate: string;
   endDate: string;
   budgetTarget?: number;
+  coverImage?: string;
 }
 
 export const tripsApi = {
@@ -25,4 +27,9 @@ export const tripsApi = {
     apiClient
       .get<Trip>(`/trips/${tripId}`)
       .then((r: AxiosResponse<Trip>) => r.data),
+
+  listMembers: (tripId: string) =>
+    apiClient
+      .get<TripMember[]>(`/trips/${tripId}/members`)
+      .then((r: AxiosResponse<TripMember[]>) => r.data),
 };

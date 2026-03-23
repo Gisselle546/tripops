@@ -1,14 +1,14 @@
 export interface Comment {
   id: string;
   tripId: string;
-  body: string;
-  authorUserId: string;
   itineraryItemId?: string | null;
+  body: string;
+  createdByUserId: string;
   createdAt: string;
   updatedAt: string;
 }
 
-export type ProposalStatus = "OPEN" | "DECIDED";
+export type ProposalStatus = "OPEN" | "CLOSED";
 
 export interface ProposalOption {
   id: string;
@@ -17,8 +17,10 @@ export interface ProposalOption {
   details?: string | null;
   url?: string | null;
   estimatedCost?: number | null;
+  createdByUserId: string;
   voteCount: number;
   createdAt: string;
+  updatedAt: string;
 }
 
 export interface Proposal {
@@ -27,7 +29,7 @@ export interface Proposal {
   title: string;
   description?: string | null;
   status: ProposalStatus;
-  winnerId?: string | null;
+  createdByUserId: string;
   options: ProposalOption[];
   createdAt: string;
   updatedAt: string;

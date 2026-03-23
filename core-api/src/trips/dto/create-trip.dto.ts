@@ -27,4 +27,9 @@ export class CreateTripDto {
   @IsOptional()
   @IsInt()
   budgetTarget?: number;
+
+  @IsOptional()
+  @IsString()
+  @MaxLength(2000)
+  coverImage?: string;
 }

@@ -20,5 +20,11 @@ export const envSchema = z.object({
   COOKIE_DOMAIN: z.string().optional(),
 
   // CORS
-  FRONTEND_URL: z.string().default('http://localhost:5173'),
+  FRONTEND_URL: z.string().default('http://localhost:3000'),
+
+  // AWS S3
+  AWS_S3_BUCKET: z.string().default('tripops-documents'),
+  AWS_S3_REGION: z.string().default('us-east-1'),
+  AWS_ACCESS_KEY_ID: z.string().optional(),
+  AWS_SECRET_ACCESS_KEY: z.string().optional(),
 });

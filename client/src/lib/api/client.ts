@@ -1,7 +1,7 @@
 import axios, { AxiosError, type InternalAxiosRequestConfig } from "axios";
 import { useAuthStore } from "@/stores/auth-store";
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3000";
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:7654";
 
 export const apiClient = axios.create({
   baseURL: BASE_URL,
@@ -26,7 +26,14 @@ apiClient.interceptors.response.use(
       _retry?: boolean;
     };
 
-    if (error.response?.status === 401 && !original._retry) {
+    const requestUrl = original?.url ?? "";
+    const isAuthEndpoint =
+      requestUrl.includes("/auth/login") ||
+      requestUrl.includes("/auth/register") ||
+      requestUrl.includes("/auth/refresh") ||
+      requestUrl.includes("/auth/logout");
+
+    if (error.response?.status === 401 && !original._retry && !isAuthEndpoint) {
       original._retry = true;
 
       // Deduplicate concurrent refresh calls
@@ -52,6 +59,7 @@ apiClient.interceptors.response.use(
       }
 
       const newToken = await refreshPromise;
+      original.headers = original.headers ?? {};
       original.headers.Authorization = `Bearer ${newToken}`;
       return apiClient(original);
     }

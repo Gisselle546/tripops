@@ -10,4 +10,9 @@ export class CreateWorkspaceDto {
   @IsString()
   @MaxLength(500)
   description?: string;
+
+  @IsOptional()
+  @IsString()
+  @MaxLength(2000)
+  coverImage?: string;
 }
